@@ -49,11 +49,20 @@
     export default class extends wepy.app {
         config = {
             pages: [
-                'pages/index',
+                'pages/topics/index',
+                'pages/topics/show',
+                'pages/topics/userIndex',
+
                 'pages/users/me',
+                'pages/users/edit',
+                'pages/users/show',
+
                 'pages/auth/login',
                 'pages/auth/register',
-                'pages/users/edit',
+
+                'pages/replies/index',
+                'pages/replies/userIndex',
+                'pages/replies/create'
             ],
             window: {
                 backgroundTextStyle: 'light',
@@ -63,7 +72,7 @@
             },
             tabBar: {
                 list: [{
-                    pagePath: 'pages/index',
+                    pagePath: 'pages/topics/index',
                     text: '首页',
                     iconPath: 'images/index.png',
                     selectedIconPath: 'images/index_selected.png'
@@ -122,6 +131,19 @@
         // 用户是否已经登录
         checkLogin () {
             return (wepy.getStorageSync('access_token') !== '')
+        }
+
+        globalData = {
+            refreshPages: []
+        }
+        checkRefreshPages (route, callback) {
+            let refreshIndex = this.globalData.refreshPages.indexOf(route)
+            if (refreshIndex === -1) {
+                return
+            }
+
+            this.globalData.refreshPages.splice(refreshIndex, 1)
+            callback && callback()
         }
     }
 </script>
